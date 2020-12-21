@@ -1,6 +1,6 @@
 /*
 * @author Tutino Giuseppe
-* @version 1.0
+* @version 1.1
 * */
 
 import java.awt.*;
@@ -12,8 +12,8 @@ import javax.swing.*;
 public class Main extends JPanel implements KeyListener, ActionListener
 {
 	//Dimensione di un quadrato
-	final int X = 25;
-	final int Y = 25;
+	final int X = 30;
+	final int Y = 30;
 
 	//limite della mappa
 	final int max_X = X*33;
@@ -42,7 +42,7 @@ public class Main extends JPanel implements KeyListener, ActionListener
 	Vector<Snake> Snake = new Vector<>();
 
 	//Velocità del serpente
-	int speed = 500;
+	int speed = 300;
 	Timer t;
 
 	public Main() {
@@ -147,110 +147,78 @@ public class Main extends JPanel implements KeyListener, ActionListener
 
 	private void Right()
 	{
+		//Cicla il serpente
+		for (int z=lunghezza-1; z>0; z--) {
 
-                for(int i=0;i<lunghezza;i++) {
-                        if(Snake.elementAt(i).y != testa_y) {
+			//x e y dell'ultimo elemento diventano il penultimo
+	                Snake.elementAt(z).x = Snake.elementAt(z-1).x;
+	                Snake.elementAt(z).y = Snake.elementAt(z-1).y;
+		}
+		//Il serpente va a destra
+	        Snake.elementAt(0).x += X;
 
-                                if (Snake.elementAt(i).y > testa_y) {
-                                        Snake.elementAt(i).y -= Y;
-                                }
-                                else {
-                                        Snake.elementAt(i).y += Y;
-                                }
+	        //Limite della mappa superato
+		for(int i=0;i<lunghezza;i++) {
+		 if(Snake.elementAt(i).x > max_X) {
+				Snake.elementAt(i).x = X;
+			}
+		}
 
-                        }
-                        else {
-                                Snake.elementAt(i).x += X;
-                        }
-
-                        if(Snake.elementAt(i).x > max_X) {
-                                Snake.elementAt(i).x = X;
-                        }
-                }
-		repaint();
-
+	        repaint();
 	}
 
 	private void Left()
 	{
+		for (int z=lunghezza-1; z>0; z--) {
+	                Snake.elementAt(z).x = Snake.elementAt(z-1).x;
+	                Snake.elementAt(z).y = Snake.elementAt(z-1).y;
+		}
+	        Snake.elementAt(0).x -= X;
 
-                for(int i=0;i<lunghezza;i++) {
-                        if(Snake.elementAt(i).y != testa_y) {
+	        //Limite della mappa superato
+		for(int i=0;i<lunghezza;i++) {
+		 if(Snake.elementAt(i).x < X) {
+				Snake.elementAt(i).x = max_X;
+			}
+		}
 
-                                if (Snake.elementAt(i).y > testa_y) {
-                                        Snake.elementAt(i).y -= Y;
-                                }
-                                else {
-                                        Snake.elementAt(i).y += Y;
-                                }
-
-                        }
-                        else {
-                                Snake.elementAt(i).x -= X;
-                        }
-
-                       if(Snake.elementAt(i).x < X) {
-                                Snake.elementAt(i).x = max_X;
-                        }
-                }
-		repaint();
+	        repaint();
 	}
 
 	private void Down()
 	{
+		for (int z=lunghezza-1; z>0; z--) {
+	                Snake.elementAt(z).x = Snake.elementAt(z-1).x;
+	                Snake.elementAt(z).y = Snake.elementAt(z-1).y;
+		}
+	        Snake.elementAt(0).y += Y;
 
-                for(int i=0;i<lunghezza;i++) {
+	        //Limite della mappa superato
+		for(int i=0;i<lunghezza;i++) {
+		 if(Snake.elementAt(i).y > max_Y) {
+				Snake.elementAt(i).y = Y;
+			}
+		}
 
-                        if(Snake.elementAt(i).x != testa_x) {
-
-                                if (Snake.elementAt(i).x > testa_x) {
-                                        Snake.elementAt(i).x -= X;
-                                }
-                                else {
-                                        Snake.elementAt(i).x += X;
-                                }
-
-                        }
-                        else {
-                                Snake.elementAt(i).y += Y;
-                        }
-
-                        if(Snake.elementAt(i).y > max_Y) {
-                                Snake.elementAt(i).y = Y;
-                        }
-                }
-
-		repaint();
+	        repaint();
 	}
 
 	private void Up()
 	{
+	        for (int z=lunghezza-1; z>0; z--) {
+	                Snake.elementAt(z).x = Snake.elementAt(z-1).x;
+	                Snake.elementAt(z).y = Snake.elementAt(z-1).y;
+		}
+	        Snake.elementAt(0).y -= Y;
 
-                for(int i=0;i<lunghezza;i++) {
-
-                        /*
-                        *Serve per posizionare il serpente quando fa una curva
-                        *
-                        */
-                        if(Snake.elementAt(i).x != testa_x) {
-
-                                if (Snake.elementAt(i).x > testa_x) {
-                                        Snake.elementAt(i).x -= X;
-                                }
-                                else {
-                                        Snake.elementAt(i).x += X;
-                                }
-                        }
-                        else {
-                                Snake.elementAt(i).y -= Y;
-                        }
-
-                        //Limite della mappa superato
-                        if(Snake.elementAt(i).y < Y) {
+	        //Limite della mappa superato
+		for(int i=0;i<lunghezza;i++) {
+		 if(Snake.elementAt(i).y < Y) {
 				Snake.elementAt(i).y = max_Y;
 			}
-                }
-		repaint();
+		}
+
+	        repaint();
 	}
 
 	@Override
